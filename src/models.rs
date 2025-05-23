@@ -17,6 +17,7 @@ pub struct AnalyzeResponse {
     pub tashkeel_text: String,
 }
 
+// إصلاح هيكل TextAnalysis للتعامل مع الحقول Optional
 #[derive(Debug, FromRow, Serialize)]
 pub struct TextAnalysis {
     pub id: Uuid,
@@ -24,8 +25,8 @@ pub struct TextAnalysis {
     pub simplified_text: Option<String>,
     pub definitions: serde_json::Value,
     pub tashkeel_text: Option<String>,
-    pub created_at: DateTime<Utc>,
-    pub updated_at: DateTime<Utc>,
+    pub created_at: Option<DateTime<Utc>>, // تغيير إلى Option
+    pub updated_at: Option<DateTime<Utc>>, // تغيير إلى Option
 }
 
 #[derive(Debug, Serialize, Deserialize)]

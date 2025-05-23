@@ -1,6 +1,6 @@
 use crate::models::TextAnalysis;
 use anyhow::Result;
-use sqlx::{PgPool, Row};
+use sqlx::PgPool;
 use uuid::Uuid;
 
 pub struct Database {
@@ -45,25 +45,50 @@ impl Database {
     }
 
     pub async fn get_analysis(&self, id: Uuid) -> Result<Option<TextAnalysis>> {
-        let analysis = sqlx::query_as!(
-            TextAnalysis,
-            "SELECT * FROM text_analyses WHERE id = $1",
+        // استخدام query! بدلاً من query_as! للتحكم أكثر
+        let row = sqlx::query!(
+            "SELECT id, original_text, simplified_text, definitions, tashkeel_text, created_at, updated_at FROM text_analyses WHERE id = $1",
             id
         )
         .fetch_optional(&self.pool)
         .await?;
 
-        Ok(analysis)
+        if let Some(row) = row {
+            let analysis = TextAnalysis {
+                id: row.id,
+                original_text: row.original_text,
+                simplified_text: row.simplified_text,
+                definitions: row.definitions.unwrap_or_else(|| serde_json::json!([])),
+                tashkeel_text: row.tashkeel_text,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+            };
+            Ok(Some(analysis))
+        } else {
+            Ok(None)
+        }
     }
 
     pub async fn get_recent_analyses(&self, limit: i64) -> Result<Vec<TextAnalysis>> {
-        let analyses = sqlx::query_as!(
-            TextAnalysis,
-            "SELECT * FROM text_analyses ORDER BY created_at DESC LIMIT $1",
+        let rows = sqlx::query!(
+            "SELECT id, original_text, simplified_text, definitions, tashkeel_text, created_at, updated_at FROM text_analyses ORDER BY created_at DESC LIMIT $1",
             limit
         )
         .fetch_all(&self.pool)
         .await?;
+
+        let analyses = rows
+            .into_iter()
+            .map(|row| TextAnalysis {
+                id: row.id,
+                original_text: row.original_text,
+                simplified_text: row.simplified_text,
+                definitions: row.definitions.unwrap_or_else(|| serde_json::json!([])),
+                tashkeel_text: row.tashkeel_text,
+                created_at: row.created_at,
+                updated_at: row.updated_at,
+            })
+            .collect();
 
         Ok(analyses)
     }
