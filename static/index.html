@@ -3,59 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فصيح - مبسط اللغة العربية</title>
+    <title>فصيح - مبسط اللغة العربية بالذكاء الاصطناعي</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="title">فصيح</h1>
-            <p class="subtitle">مبسط اللغة العربية بالذكاء الاصطناعي</p>
-        </header>
+<body class="antialiased">
+    <!-- Theme Toggle -->
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع المظلم">
+        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        </svg>
+        <svg class="moon-icon hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
 
-        <main class="main">
-            <div class="input-section">
-                <textarea 
-                    id="inputText" 
-                    placeholder="اكتب النص العربي الذي تريد تبسيطه هنا..."
-                    rows="6"
-                ></textarea>
-                <button id="analyzeBtn" class="analyze-btn">
-                    <span id="btnText">تحليل النص</span>
-                    <span id="btnLoader" class="loader hidden">⏳</span>
-                </button>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i data-feather="book-open"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1 class="logo-title">فصيح</h1>
+                        <p class="logo-subtitle">مبسط اللغة العربية بالذكاء الاصطناعي</p>
+                    </div>
+                </div>
+                
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <i data-feather="zap"></i>
+                        <span>سريع ودقيق</span>
+                    </div>
+                    <div class="stat-item">
+                        <i data-feather="shield-check"></i>
+                        <span>موثوق وآمن</span>
+                    </div>
+                </div>
             </div>
+        </div>
+    </header>
 
-            <div id="results" class="results hidden">
-                <div class="result-card">
-                    <h3>النص المبسط</h3>
-                    <p id="simplifiedText"></p>
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i data-feather="edit-3"></i>
+                        أدخل النص المراد تبسيطه
+                    </h2>
+                    <p class="section-description">
+                        اكتب أو الصق النص العربي الذي تريد تبسيطه وفهم معانيه الصعبة
+                    </p>
                 </div>
 
-                <div class="result-card">
-                    <h3>معاني الكلمات الصعبة</h3>
-                    <ul id="definitions"></ul>
+                <div class="input-container">
+                    <div class="textarea-wrapper">
+                        <textarea 
+                            id="inputText" 
+                            placeholder="مثال: وما الحياة الدنيا إلا متاع الغرور..."
+                            rows="6"
+                            aria-label="النص المراد تحليله"
+                        ></textarea>
+                        <div class="textarea-footer">
+                            <span id="charCount" class="char-counter">0 حرف</span>
+                            <div class="input-actions">
+                                <button type="button" id="clearBtn" class="btn btn-secondary" aria-label="مسح النص">
+                                    <i data-feather="x"></i>
+                                    مسح
+                                </button>
+                                <button type="button" id="pasteBtn" class="btn btn-secondary" aria-label="لصق النص">
+                                    <i data-feather="clipboard"></i>
+                                    لصق
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="analyzeBtn" class="analyze-btn" aria-label="تحليل النص">
+                        <span id="btnText">
+                            <i data-feather="play-circle"></i>
+                            تحليل النص
+                        </span>
+                        <span id="btnLoader" class="loader hidden">
+                            <i data-feather="loader"></i>
+                            جاري التحليل...
+                        </span>
+                    </button>
                 </div>
 
-                <div class="result-card">
-                    <h3>النص مع التشكيل</h3>
-                    <p id="tashkeelText"></p>
+                <div class="features-preview">
+                    <div class="feature-item">
+                        <i data-feather="type"></i>
+                        <span>تبسيط النص</span>
+                    </div>
+                    <div class="feature-item">
+                        <i data-feather="book"></i>
+                        <span>تعريف الكلمات</span>
+                    </div>
+                    <div class="feature-item">
+                        <i data-feather="volume-2"></i>
+                        <span>إضافة التشكيل</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results" class="results-section hidden">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i data-feather="check-circle"></i>
+                        نتائج التحليل
+                    </h2>
+                    <div class="results-actions">
+                        <button id="copyAllBtn" class="btn btn-secondary">
+                            <i data-feather="copy"></i>
+                            نسخ الكل
+                        </button>
+                        <button id="shareBtn" class="btn btn-secondary">
+                            <i data-feather="share-2"></i>
+                            مشاركة
+                        </button>
+                        <button id="downloadBtn" class="btn btn-secondary">
+                            <i data-feather="download"></i>
+                            تحميل
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Original Text Card -->
+                    <div class="result-card original-text">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i data-feather="file-text"></i>
+                                النص الأصلي
+                            </h3>
+                        </div>
+                        <div class="card-content">
+                            <div id="originalText" class="original-content"></div>
+                        </div>
+                    </div>
+
+                    <!-- Simplified Text Card -->
+                    <div class="result-card simplified-text">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i data-feather="edit"></i>
+                                النص المبسط
+                            </h3>
+                            <button class="copy-btn" data-target="simplifiedText" aria-label="نسخ النص المبسط">
+                                <i data-feather="copy"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div id="simplifiedText" class="simplified-content"></div>
+                        </div>
+                    </div>
+
+                    <!-- Definitions Card -->
+                    <div class="result-card definitions">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i data-feather="book-open"></i>
+                                معاني الكلمات الصعبة
+                            </h3>
+                            <span id="definitionsCount" class="count-badge">0</span>
+                        </div>
+                        <div class="card-content">
+                            <div id="definitions" class="definitions-list"></div>
+                        </div>
+                    </div>
+
+                    <!-- Tashkeel Text Card -->
+                    <div class="result-card tashkeel-text">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i data-feather="type"></i>
+                                النص مع التشكيل
+                            </h3>
+                            <button class="copy-btn" data-target="tashkeelText" aria-label="نسخ النص مع التشكيل">
+                                <i data-feather="copy"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div id="tashkeelText" class="tashkeel-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Summary -->
+                <div class="analysis-summary">
+                    <div class="summary-card">
+                        <div class="summary-header">
+                            <h3>
+                                <i data-feather="bar-chart-2"></i>
+                                ملخص التحليل
+                            </h3>
+                        </div>
+                        <div class="summary-content">
+                            <div class="summary-stats">
+                                <div class="stat">
+                                    <span class="stat-label">عدد الكلمات:</span>
+                                    <span id="wordCount" class="stat-value">0</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">الكلمات الصعبة:</span>
+                                    <span id="difficultWords" class="stat-value">0</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-label">مستوى الصعوبة:</span>
+                                    <span id="difficultyLevel" class="stat-value">متوسط</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section id="error" class="error-section hidden">
+                <div class="error-content">
+                    <i data-feather="alert-circle"></i>
+                    <h3>حدث خطأ أثناء التحليل</h3>
+                    <p>يرجى المحاولة مرة أخرى أو التحقق من اتصال الإنترنت</p>
+                    <button id="retryBtn" class="btn btn-primary">
+                        <i data-feather="refresh-cw"></i>
+                        إعادة المحاولة
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2025 فصيح - مدعوم بالذكاء الاصطناعي</p>
+                    <p class="footer-tech">مطور بـ Rust • PostgreSQL • DeepSeek AI</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/api/health" class="footer-link" aria-label="حالة الخادم">
+                        <i data-feather="activity"></i>
+                        حالة الخادم
+                    </a>
+                    <a href="/api/recent" class="footer-link" aria-label="آخر التحاليل">
+                        <i data-feather="clock"></i>
+                        آخر التحاليل
+                    </a>
+                    <a href="#" class="footer-link" aria-label="حول فصيح">
+                        <i data-feather="info"></i>
+                        حول فصيح
+                    </a>
                 </div>
             </div>
+        </div>
+    </footer>
 
-            <div id="error" class="error hidden">
-                <p>حدث خطأ أثناء التحليل. يرجى المحاولة مرة أخرى.</p>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="loading-spinner">
+                <i data-feather="loader"></i>
             </div>
-        </main>
-
-        <footer class="footer">
-            <p>© 2025 فصيح - مدعوم بالذكاء الاصطناعي</p>
-        </footer>
+            <h3>جاري تحليل النص...</h3>
+            <p>قد يستغرق هذا بضع ثوانٍ</p>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">معالجة النص...</p>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Initialize Feather Icons
+        feather.replace();
+        
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = themeToggle.querySelector('.sun-icon');
+        const moonIcon = themeToggle.querySelector('.moon-icon');
+        
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        if (currentTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            } else {
+                localStorage.setItem('theme', 'light');
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
